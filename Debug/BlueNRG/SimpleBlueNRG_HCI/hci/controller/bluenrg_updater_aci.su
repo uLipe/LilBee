@@ -1,0 +1,11 @@
+bluenrg_updater_aci.c:28:12:aci_updater_start	40	static
+bluenrg_updater_aci.c:44:12:aci_updater_reboot	40	static
+bluenrg_updater_aci.c:60:12:aci_get_updater_version	48	static
+bluenrg_updater_aci.c:81:12:aci_get_updater_buffer_size	48	static
+bluenrg_updater_aci.c:102:12:aci_erase_blue_flag	40	static
+bluenrg_updater_aci.c:119:12:aci_reset_blue_flag	40	static
+bluenrg_updater_aci.c:136:12:aci_updater_erase_sector	48	static
+bluenrg_updater_aci.c:158:12:aci_updater_program_data_block	184	static
+bluenrg_updater_aci.c:187:12:aci_updater_read_data_block	184	static
+bluenrg_updater_aci.c:218:12:aci_updater_calc_crc	64	static
+bluenrg_updater_aci.c:247:12:aci_updater_hw_version	48	static

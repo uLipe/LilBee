@@ -1,0 +1,11 @@
+hci.c:49:6:hci_timeout_callback	4	static
+hci.c:55:6:HCI_Init	16	static
+hci.c:79:5:HCI_verify	24	static
+hci.c:92:6:HCI_Process	16	static
+hci.c:114:6:HCI_Queue_Empty	8	static
+hci.c:119:6:HCI_Isr	16	static
+hci.c:155:6:hci_write	24	static
+hci.c:168:6:hci_send_cmd	32	static
+hci.c:182:13:move_list	24	static
+hci.c:193:13:free_event_list	16	static
+hci.c:210:5:hci_send_req	72	static
