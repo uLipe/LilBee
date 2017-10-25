@@ -52,9 +52,7 @@
 #include "stm32l0xx_hal.h"
 #endif /* USE_STM32L0XX_NUCLEO */
 
-#ifdef USE_STM32L4XX_NUCLEO
 #include "stm32l4xx_hal.h"
-#endif /* USE_STM32L4XX_NUCLEO */
 
 #ifdef __cplusplus
 }

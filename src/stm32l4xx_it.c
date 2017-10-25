@@ -46,6 +46,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_it.h"
 #include "SensorTile_BlueNRG.h"
+#include "event_queue.h"
 
 /* Imported variables ---------------------------------------------------------*/
 extern TIM_HandleTypeDef  TimHandle;
