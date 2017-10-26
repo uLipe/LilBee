@@ -5,3 +5,4 @@
 *.hex
 *.tmp
 
+/Debug/

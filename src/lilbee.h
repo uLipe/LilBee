@@ -51,6 +51,8 @@
 
 /** applications headers */
 #include "event_queue.h"
+#include "bee_dsp.h"
+#include "bee_audio_acquisition.h"
 #include "bee_ble_service.h"
 
 
