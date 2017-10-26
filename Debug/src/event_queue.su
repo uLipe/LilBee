@@ -1,4 +1,0 @@
-event_queue.c:18:5:event_queue_init	4	static
-event_queue.c:23:16:event_queue_peek	16	static
-event_queue.c:28:16:event_queue_get	16	static
-event_queue.c:37:5:event_queue_put	24	static

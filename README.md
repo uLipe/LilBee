@@ -4,7 +4,7 @@ estimate bee behavior by analyzing its emitted sound, using simple feature extra
 on FFT on audio frame. This is the firmware of sensor node and was aimed to be built on STM evaluation 
 platform SensorTile using its embedded mic.
 
-# memory footprint:
+# Memory footprint:
 Under development, coming soon
   
 # Main Features:
@@ -28,7 +28,7 @@ Under development, coming soon
 Contributions are always welcome! Improved some thing or corrected some
 fault? Share it through a pull request!
 
-# Licence:
+# License:
 This project is released under MIT License, so use as you
 want!
 

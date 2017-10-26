@@ -1,4 +1,4 @@
-Debug/*
+/Debug/*
 *.o
 *.d
 *.elf
