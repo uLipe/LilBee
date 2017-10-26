@@ -1,0 +1,7 @@
+Debug/*
+*.o
+*.d
+*.elf
+*.hex
+*.tmp
+

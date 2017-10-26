@@ -1,11 +1,26 @@
-#include "stm32l4xx_periph_conf.h"
-#include "event_queue.h"
-#include "SensorTile_BlueNRG.h"
-#include "SensorTile_audio_in.h"
-#include "bee_ble_service.h"
+/*
+ *  @file 	lilbee.c
+ *  @brief 	littlebee firmware application entry point
+ *
+ */
+
+#include "lilbee.h"
 
 
-void sysclk_config(void)
+/** internal functions */
+
+
+
+/**
+ * 	@fn sysclk_config()
+ *  @brief setup processor clock units
+ *
+ *  @param
+ *  @return
+ *
+ *
+ */
+static void sysclk_config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -60,7 +75,16 @@ void sysclk_config(void)
   }
 }
 
+/** Public functions */
 
+
+/**
+ * 	@fn main()
+ *  @brief application entrypoint and aloop
+ *
+ *  @param
+ *  @return
+ */
 int main(void)
 {
 	HAL_Init();
@@ -69,6 +93,7 @@ int main(void)
 	/* inits the sub applications */
 	bee_ble_init();
 
+
 	for(;;){
 		system_event_t ev = event_queue_get();
 
@@ -76,8 +101,7 @@ int main(void)
 
 		if(event_queue_peek() == k_noevent) {
 			/* No event pending, sleep the cpu */
-
-
+			__WFI();
 		}
 	}
 }
