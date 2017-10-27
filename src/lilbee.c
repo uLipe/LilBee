@@ -91,12 +91,16 @@ int main(void)
 	sysclk_config();
 
 	/* inits the sub applications */
+	bee_dsp_init(AUDIO_SAMPLE_FREQ);
+	audio_acq_init();
 	bee_ble_init();
 
 
 	for(;;){
 		system_event_t ev = event_queue_get();
 
+		audio_handler(ev);
+		bee_dsp_handler(ev);
 		bee_ble_handler(ev);
 
 		if(event_queue_peek() == k_noevent) {

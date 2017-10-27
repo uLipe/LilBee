@@ -8,11 +8,20 @@
 #define __LILBEE_H
 
 
+/** lil bee error codes */
+typedef enum {
+	k_bee_ret_ok,
+	k_bee_ret_invalid_param,
+	k_bee_err,
+}bee_retcode_t;
+
+
 /** libc headers */
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
+#include <stdint.h>
+#include <math.h>
 
 /** SoC headers */
 #include "stm32l4xx.h"
@@ -22,6 +31,9 @@
 #include "stm32l4xx_it.h"
 #include "hal_types.h"
 
+#include "arm_math.h"
+#include "arm_const_structs.h"
+#include "arm_common_tables.h"
 
 /** BLE headers */
 #include "bluenrg_gatt_server.h"
@@ -54,6 +66,7 @@
 #include "bee_dsp.h"
 #include "bee_audio_acquisition.h"
 #include "bee_ble_service.h"
+#include "bee_dsp.h"
 
 
 /** reference doc */
@@ -66,6 +79,8 @@
  *  @param
  *  @return
  */
+
+
 
 
 #endif

@@ -199,4 +199,15 @@ void TIM3_IRQHandler(void)
   HAL_TIM_IRQHandler(&TimHandle);
 }
 
+/**
+  * @brief This function handles DFSDM Left DMAinterrupt request.
+  * @param None
+  * @retval None
+  */
+void AUDIO_IN_DFSDM_DMA_1st_CH_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(&hdma_dfsdmReg_FLT[0]);
+}
+
+
 /************************ (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

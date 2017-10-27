@@ -7,7 +7,7 @@
 #define __BEE_AUDIO_ACQUISITION_H
 
 /* define audio sample frequency Hz*/
-#define AUDIO_SAMPLE_FREQ 	AUDIO_FREQUENCY_44K
+#define AUDIO_SAMPLE_FREQ 	AUDIO_FREQUENCY_48K
 
 /* define audio bit resolution */
 #define AUDIO_BIT_RES		16
@@ -16,7 +16,11 @@
 #define AUDIO_CHANNELS		1
 
 /* define the audio window length s/ms  */
-#define AUDIO_WINDOW_LEN	8
+#define AUDIO_WINDOW_LEN	1000
+
+
+/* define the audio frame size  MUST BE A MULTIPLE of 48*/
+#define AUDIO_FRAME_SIZE	1056
 
 /** audio frame data structure */
 typedef struct audio_frame {
