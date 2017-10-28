@@ -7,14 +7,14 @@
 #define __BEE_DSP_H
 
 /* number of points computed by the FFT */
-#define FFT_POINTS	512
+#define DSP_FFT_POINTS	512
 
 
 /* Bee audio RAW spectra */
 typedef struct bee_spectra{
 	uint32_t spectral_sample_rate;
 	uint32_t spectral_points;
-	float raw[FFT_POINTS * 2];
+	float raw[DSP_FFT_POINTS];
 }bee_spectra_t;
 
 
@@ -79,8 +79,8 @@ static inline int32_t bee_dsp_get_frequency_val(bee_spectra_t *spectra, uint32_t
 {
 	int32_t ret = -1;
 
-	if(f <= (bee_get_dsp_sample_rate()/2)) {
-		uint32_t scale = ((bee_get_dsp_sample_rate()/2) / (FFT_POINTS/2));
+	if(f <= (bee_dsp_get_sample_rate()/2)) {
+		uint32_t scale = ((bee_dsp_get_sample_rate()/2) / (DSP_FFT_POINTS/2));
 		ret = (int32_t)spectra->raw[f / scale];
 	}
 

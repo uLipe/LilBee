@@ -7,7 +7,7 @@
 static bee_service_status_t state = k_bee_disconnected;
 static uint16_t bee_service_handle;
 static uint16_t bee_char_aggro_handle;
-
+static bee_spectra_t bee_spectra;
 
 /** internal functions */
 
@@ -177,7 +177,7 @@ static void bee_ble_on_hci(void)
  */
 static void bee_ble_on_aggro(void)
 {
-	uint32_t aggro_value = 0;
+	uint32_t aggro_value = bee_dsp_get_aggro_level();
 	bee_char_update((uint8_t *)&aggro_value, sizeof(aggro_value));
 }
 

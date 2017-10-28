@@ -90,11 +90,15 @@ int main(void)
 	HAL_Init();
 	sysclk_config();
 
+	BSP_LED_Init(LED1);
+
 	/* inits the sub applications */
 	bee_dsp_init(AUDIO_SAMPLE_FREQ);
 	audio_acq_init();
 	bee_ble_init();
 
+	/* start the analysis*/
+	audio_start_capture();
 
 	for(;;){
 		system_event_t ev = event_queue_get();
@@ -107,5 +111,7 @@ int main(void)
 			/* No event pending, sleep the cpu */
 			__WFI();
 		}
+
+		BSP_LED_Toggle(LED1);
 	}
 }

@@ -58,6 +58,7 @@ typedef enum {
 #include "SensorTile_audio_in.h"
 
 /** BSP headers */
+#include "SensorTile.h"
 #include "SensorTile_BlueNRG.h"
 
 

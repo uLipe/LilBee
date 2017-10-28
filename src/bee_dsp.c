@@ -12,6 +12,7 @@ static bee_spectra_t spectra = {0};
 static int32_t aggro_level = 0;
 
 static bool dsp_lock = false;
+static float dsp_float_buffer[1056];
 
 
 /** internal functions */
@@ -27,6 +28,53 @@ static void on_dsp_audio(void)
 {
 	dsp_lock = true;
 
+	/* gets the audio frame we will about to process */
+	audio_frame_t *audio_block = audio_get_current_frame();
+
+	/* no audio available or corrupted */
+	if(audio_block == NULL)
+		goto on_dsp_audio_exit;
+
+
+	/* convert audio samples to float value */
+	for(uint32_t i = 0; i < audio_block->size; i+=16) {
+		/* unroll loop for performance */
+		dsp_float_buffer[i] = (float)audio_block->audio_buffer[i];
+		dsp_float_buffer[i+1] = (float)audio_block->audio_buffer[i+1];
+		dsp_float_buffer[i+2] = (float)audio_block->audio_buffer[i+2];
+		dsp_float_buffer[i+3] = (float)audio_block->audio_buffer[i+3];
+		dsp_float_buffer[i+4] = (float)audio_block->audio_buffer[i+4];
+		dsp_float_buffer[i+5] = (float)audio_block->audio_buffer[i+5];
+		dsp_float_buffer[i+6] = (float)audio_block->audio_buffer[i+6];
+		dsp_float_buffer[i+7] = (float)audio_block->audio_buffer[i+7];
+		dsp_float_buffer[i+8] = (float)audio_block->audio_buffer[i+8];
+		dsp_float_buffer[i+9] = (float)audio_block->audio_buffer[i+9];
+		dsp_float_buffer[i+10] = (float)audio_block->audio_buffer[i+10];
+		dsp_float_buffer[i+11] = (float)audio_block->audio_buffer[i+11];
+		dsp_float_buffer[i+12] = (float)audio_block->audio_buffer[i+12];
+		dsp_float_buffer[i+13] = (float)audio_block->audio_buffer[i+13];
+		dsp_float_buffer[i+14] = (float)audio_block->audio_buffer[i+14];
+		dsp_float_buffer[i+15] = (float)audio_block->audio_buffer[i+15];
+	}
+
+	/* prepare to compute the FFT */
+	arm_cfft_f32(&arm_cfft_sR_f32_len512, dsp_float_buffer, 0, 1);
+	arm_cmplx_mag_f32(dsp_float_buffer, &spectra.raw[0], DSP_FFT_POINTS);
+
+	/* the spectra is ready, now we need to find the bee hissing frequency */
+	uint32_t hiss_frequency = 2800;
+	float accum = 0.0f;
+	uint32_t iter = 0;
+	for(uint32_t i = hiss_frequency; i < 3200; i += 45) {
+		/* perform a simple average calculation */
+		accum += bee_dsp_get_frequency_val(&spectra, i);
+		iter++;
+	}
+
+	/* estimente the aggro level searching the hissing frequency interval */
+	aggro_level = (uint32_t)(accum / iter);
+
+on_dsp_audio_exit:
 	/* broadcast the dsp end of processing */
 	event_queue_put(k_dsp_endprocess);
 }
@@ -64,14 +112,8 @@ uint32_t bee_dsp_get_sample_rate(void)
 
 uint32_t bee_dsp_get_aggro_level(void)
 {
-	uint32_t ret = 0;
 
-	if(!dsp_lock) {
-		ret = aggro_level;
-	}
-
-	return(ret);
-
+	return(aggro_level);
 }
 
 bee_retcode_t bee_dsp_get_spectra(bee_spectra_t *raw)
