@@ -71,6 +71,9 @@ static void on_dsp_audio(void)
 		iter++;
 	}
 
+	spectra.spectral_points = DSP_FFT_POINTS;
+	spectra.spectral_sample_rate = AUDIO_SAMPLE_FREQ;
+
 	/* estimente the aggro level searching the hissing frequency interval */
 	aggro_level = (uint32_t)(accum / iter);
 
@@ -92,6 +95,7 @@ static void on_dsp_endproc(void)
 	dsp_lock = false;
 
 	/* broadcast a new processed aggro level */
+	audio_start_capture();
 	event_queue_put(k_aggresivity_available);
 }
 

@@ -190,16 +190,6 @@ void OTG_FS_IRQHandler(void)
 
 
 /**
-  * @brief  This function handles TIM interrupt request.
-  * @param  None
-  * @retval None
-  */
-void TIM3_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&TimHandle);
-}
-
-/**
   * @brief This function handles DFSDM Left DMAinterrupt request.
   * @param None
   * @retval None

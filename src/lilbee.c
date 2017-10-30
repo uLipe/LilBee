@@ -87,8 +87,8 @@ static void sysclk_config(void)
  */
 int main(void)
 {
-	HAL_Init();
 	sysclk_config();
+	HAL_Init();
 
 	BSP_LED_Init(LED1);
 
