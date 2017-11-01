@@ -177,8 +177,10 @@ static void bee_ble_on_hci(void)
  */
 static void bee_ble_on_aggro(void)
 {
-	uint32_t aggro_value = bee_dsp_get_aggro_level();
-	bee_char_update((uint8_t *)&aggro_value, sizeof(aggro_value));
+	if(state == k_bee_connected) {
+		float aggro_value = bee_dsp_get_aggro_level();
+		bee_char_update((uint8_t *)&aggro_value, sizeof(aggro_value));
+	}
 }
 
 /**
@@ -191,6 +193,7 @@ static void bee_ble_on_aggro(void)
 static void bee_ble_on_disconnected(void)
 {
    state = k_bee_disconnected;
+   bee_ble_start_advertisement();
 }
 
 /**

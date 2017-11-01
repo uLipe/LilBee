@@ -46,7 +46,7 @@ uint32_t bee_dsp_get_sample_rate(void);
  *  @param
  *  @return
  */
-uint32_t bee_dsp_get_aggro_level(void);
+float bee_dsp_get_aggro_level(void);
 
 
 /**
@@ -66,26 +66,6 @@ bee_retcode_t bee_dsp_get_spectra(bee_spectra_t *raw);
  *  @return
  */
 void bee_dsp_handler(system_event_t ev);
-
-
-/**
- * 	@fn func()
- *  @brief
- *
- *  @param
- *  @return
- */
-static inline int32_t bee_dsp_get_frequency_val(bee_spectra_t *spectra, uint32_t f)
-{
-	int32_t ret = -1;
-
-	if(f <= (bee_dsp_get_sample_rate()/2)) {
-		uint32_t scale = ((bee_dsp_get_sample_rate()/2) / (DSP_FFT_POINTS/2));
-		ret = (int32_t)spectra->raw[f / scale];
-	}
-
-	return(ret);
-}
 
 
 

@@ -9,11 +9,11 @@
 /** internal variables */
 static uint32_t sample = 0;
 static bee_spectra_t spectra = {0};
-static int32_t aggro_level = 0;
+static float aggro_level = 0;
 
 static bool dsp_lock = false;
 static float dsp_float_buffer[1056];
-
+extern const arm_rfft_fast_instance_f32 arm_rfft_fast_sR_f32_len512;
 
 /** internal functions */
 
@@ -39,43 +39,35 @@ static void on_dsp_audio(void)
 	/* convert audio samples to float value */
 	for(uint32_t i = 0; i < audio_block->size; i+=16) {
 		/* unroll loop for performance */
-		dsp_float_buffer[i] = (float)audio_block->audio_buffer[i];
-		dsp_float_buffer[i+1] = (float)audio_block->audio_buffer[i+1];
-		dsp_float_buffer[i+2] = (float)audio_block->audio_buffer[i+2];
-		dsp_float_buffer[i+3] = (float)audio_block->audio_buffer[i+3];
-		dsp_float_buffer[i+4] = (float)audio_block->audio_buffer[i+4];
-		dsp_float_buffer[i+5] = (float)audio_block->audio_buffer[i+5];
-		dsp_float_buffer[i+6] = (float)audio_block->audio_buffer[i+6];
-		dsp_float_buffer[i+7] = (float)audio_block->audio_buffer[i+7];
-		dsp_float_buffer[i+8] = (float)audio_block->audio_buffer[i+8];
-		dsp_float_buffer[i+9] = (float)audio_block->audio_buffer[i+9];
-		dsp_float_buffer[i+10] = (float)audio_block->audio_buffer[i+10];
-		dsp_float_buffer[i+11] = (float)audio_block->audio_buffer[i+11];
-		dsp_float_buffer[i+12] = (float)audio_block->audio_buffer[i+12];
-		dsp_float_buffer[i+13] = (float)audio_block->audio_buffer[i+13];
-		dsp_float_buffer[i+14] = (float)audio_block->audio_buffer[i+14];
-		dsp_float_buffer[i+15] = (float)audio_block->audio_buffer[i+15];
+		dsp_float_buffer[i] = (float)audio_block->audio_buffer[i]/32768.0f - 1.0f;
+		dsp_float_buffer[i+1] = (float)audio_block->audio_buffer[i+1]/32768.0f - 1.0f;
+		dsp_float_buffer[i+2] = (float)audio_block->audio_buffer[i+2]/32768.0f - 1.0f;
+		dsp_float_buffer[i+3] = (float)audio_block->audio_buffer[i+3]/32768.0f - 1.0f;
+		dsp_float_buffer[i+4] = (float)audio_block->audio_buffer[i+4]/32768.0f - 1.0f;
+		dsp_float_buffer[i+5] = (float)audio_block->audio_buffer[i+5]/32768.0f - 1.0f;
+		dsp_float_buffer[i+6] = (float)audio_block->audio_buffer[i+6]/32768.0f - 1.0f;
+		dsp_float_buffer[i+7] = (float)audio_block->audio_buffer[i+7]/32768.0f- 1.0f;
+		dsp_float_buffer[i+8] = (float)audio_block->audio_buffer[i+8]/32768.0f - 1.0f;
+		dsp_float_buffer[i+9] = (float)audio_block->audio_buffer[i+9]/32768.0f - 1.0f;
+		dsp_float_buffer[i+10] = (float)audio_block->audio_buffer[i+10]/32768.0f - 1.0f ;
+		dsp_float_buffer[i+11] = (float)audio_block->audio_buffer[i+11]/32768.0f - 1.0f;
+		dsp_float_buffer[i+12] = (float)audio_block->audio_buffer[i+12]/32768.0f - 1.0f;
+		dsp_float_buffer[i+13] = (float)audio_block->audio_buffer[i+13]/32768.0f - 1.0f;
+		dsp_float_buffer[i+14] = (float)audio_block->audio_buffer[i+14]/32768.0f - 1.0f;
+		dsp_float_buffer[i+15] = (float)audio_block->audio_buffer[i+15]/32768.0f - 1.0f;
 	}
+
+
 
 	/* prepare to compute the FFT */
-	arm_cfft_f32(&arm_cfft_sR_f32_len512, dsp_float_buffer, 0, 1);
-	arm_cmplx_mag_f32(dsp_float_buffer, &spectra.raw[0], DSP_FFT_POINTS);
+	arm_rfft_fast_f32(&arm_rfft_fast_sR_f32_len512, dsp_float_buffer, &spectra.raw[0], 0);
+	arm_cmplx_mag_f32(&spectra.raw[0], &spectra.raw[0], DSP_FFT_POINTS);
 
-	/* the spectra is ready, now we need to find the bee hissing frequency */
-	uint32_t hiss_frequency = 2800;
-	float accum = 0.0f;
-	uint32_t iter = 0;
-	for(uint32_t i = hiss_frequency; i < 3200; i += 45) {
-		/* perform a simple average calculation */
-		accum += bee_dsp_get_frequency_val(&spectra, i);
-		iter++;
-	}
 
 	spectra.spectral_points = DSP_FFT_POINTS;
 	spectra.spectral_sample_rate = AUDIO_SAMPLE_FREQ;
-
 	/* estimente the aggro level searching the hissing frequency interval */
-	aggro_level = (uint32_t)(accum / iter);
+	aggro_level = spectra.raw[32];
 
 on_dsp_audio_exit:
 	/* broadcast the dsp end of processing */
@@ -114,7 +106,7 @@ uint32_t bee_dsp_get_sample_rate(void)
 	return(sample);
 }
 
-uint32_t bee_dsp_get_aggro_level(void)
+float bee_dsp_get_aggro_level(void)
 {
 
 	return(aggro_level);
