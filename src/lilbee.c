@@ -112,6 +112,9 @@ int main(void)
 			__WFI();
 		}
 
-		BSP_LED_Toggle(LED1);
+		if(bee_ble_get_state() == k_bee_advertising)
+			BSP_LED_Toggle(LED1);
+		else
+			BSP_LED_Off(LED1);
 	}
 }
